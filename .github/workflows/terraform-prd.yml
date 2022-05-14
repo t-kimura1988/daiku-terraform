@@ -1,0 +1,61 @@
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+  pull_request:
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: AWS Production ENV
+      if: contains(toJSON(github.ref), 'master')
+      run: |
+        echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID_PRD }} >> $GITHUB_ENV
+        echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY_PRD}} >> $GITHUB_ENV
+        echo TF_VAR_ENV=prd >> $GITHUB_ENV
+
+    - name: AWS Develop ENV
+      if: contains(toJSON(github.ref), 'develop') || contains(toJSON(github.ref), 'feature') || github.event_name == 'pull_request'
+      run: |
+        echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID_DEV }} >> $GITHUB_ENV
+        echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY_DEV}} >> $GITHUB_ENV
+        echo TF_VAR_ENV=dev >> $GITHUB_ENV
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init -backend-config=config.remote.${{ env.TF_VAR_ENV }}.tfbackend
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt -check
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      if: github.event_name == 'pull_request'
+      run: terraform plan -input=false
+
+      # On push to master, build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+      if: (github.ref == 'refs/heads/master' ||  github.ref == 'refs/heads/develop') && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false

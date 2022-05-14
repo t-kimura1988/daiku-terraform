@@ -1,0 +1,31 @@
+ci: codebuild
+notifier:
+  github:
+    token: $GITHUB_TOKEN
+    repository:
+      owner: "goen-aws-manage"
+      name: "terraform-aws"
+terraform:
+  plan:
+    template: |
+      {{ .Title }} <sup>[CI link]( {{ .Link }} )</sup>
+      {{ .Message }}
+      {{if .Result}}
+      <pre><code>{{ .Result }}
+      </pre></code>
+      {{end}}
+      <details><summary>Details (Click me)</summary>
+      <pre><code>{{ .Body }}
+      </pre></code></details>
+
+  apply:
+    template: |
+      {{ .Title }} <sup>[CI link]( {{ .Link }} )</sup>
+      {{ .Message }}
+      {{if .Result}}
+      <pre><code>{{ .Result }}
+      </pre></code>
+      {{end}}
+      <details><summary>Details (Click me)</summary>
+      <pre><code>{{ .Body }}
+      </pre></code></details>

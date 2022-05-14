@@ -1,0 +1,2 @@
+workspaces { name = "daiku-aws-dev" }
+organization = "goen"

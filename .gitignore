@@ -1,0 +1,6 @@
+terraform.tfstate.d/
+terraform.tfstate
+.idea
+.terraform
+.terraform.lock.hcl
+tmp
