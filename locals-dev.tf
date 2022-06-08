@@ -91,5 +91,9 @@ locals {
 
     route53_zone_name = "dev.goenway.com"
 
+    rds_setting = {
+      instance_class = "db.t3.small"
+    }
+
   }
 }

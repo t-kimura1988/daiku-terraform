@@ -107,6 +107,8 @@ module "rds" {
   deletion_protection = false
   security_group_id   = module.postgres_sg.security_group_id
   env                 = var.ENV
+
+  rds_setting = local.variable.rds_setting
 }
 
 module "ssm_parameter" {

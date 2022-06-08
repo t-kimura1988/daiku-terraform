@@ -2,6 +2,7 @@ variable "private_subnets" {}
 variable "deletion_protection" {}
 variable "security_group_id" {}
 variable "env" {}
+variable "rds_setting" {}
 
 resource "aws_db_parameter_group" "main" {
   name   = "main"
@@ -19,7 +20,7 @@ resource "aws_db_subnet_group" "main" {
 }
 
 resource "aws_db_instance" "main" {
-  instance_class             = "db.t3.small"
+  instance_class             = var.rds_setting.instance_class
   identifier                 = "${var.env}-daiku-db"
   engine                     = "postgres"
   engine_version             = "12.8"
