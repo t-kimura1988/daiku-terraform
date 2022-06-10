@@ -56,16 +56,16 @@ locals {
         retention_in_days     = 14,
         app_lb_name           = "daiku-app-lb",
         alb_target_group_name = "daiku-app-lb-sg",
-        route53_record_name   = "daikuapiprd",
+        route53_record_name   = "daikuapi",
         ecr_name              = "daiku-app"
       },
     }
 
     ssm_string_parameter = {
-      FIRESTORE_URL       = "https://goen-dev-new.firebaseio.com",
+      FIRESTORE_URL       = "https://goen-daiku.firebaseio.com",
       FIREBASE_TYPE       = "service_account",
-      FIREBASE_PROJECT_ID = "goen-dev-new",
-      DB_URL              = "jdbc:postgresql://daiku-db.crdgrq0punfn.ap-northeast-1.rds.amazonaws.com:5432/daikudb",
+      FIREBASE_PROJECT_ID = "goen-daiku",
+      DB_URL              = "jdbc:postgresql://prd-daiku-db.crdgrq0punfn.ap-northeast-1.rds.amazonaws.com:5432/daikudb",
       DB_USERNAME         = "prddaikuuser1"
     }
 
