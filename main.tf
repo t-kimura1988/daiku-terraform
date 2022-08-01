@@ -67,26 +67,26 @@ module "daiku_app_lb" {
   route53_zone_name          = local.variable.route53_zone_name
 }
 
-resource "aws_ecs_cluster" "main" {
-  name = "${var.ENV}-daiku"
-}
+# resource "aws_ecs_cluster" "main" {
+#   name = "${var.ENV}-daiku"
+# }
 
-module "ecs_daiku_app" {
-  source                  = "./modules/ecs-app"
-  env                     = var.ENV
-  ecs_tasks               = local.variable.ecs_app_task
-  ecs_cluster_arn         = aws_ecs_cluster.main.arn
-  protected_subnets       = module.network.protected_subnet_ids
-  security_group_ids      = [module.daiku_app_sg.security_group_id]
-  aws_lb_target_group_arn = module.daiku_app_lb.target_group_arn
-  alb_depends_on          = module.daiku_app_lb.alb_listener_depends_on
-}
+# module "ecs_daiku_app" {
+#   source                  = "./modules/ecs-app"
+#   env                     = var.ENV
+#   ecs_tasks               = local.variable.ecs_app_task
+#   ecs_cluster_arn         = aws_ecs_cluster.main.arn
+#   protected_subnets       = module.network.protected_subnet_ids
+#   security_group_ids      = [module.daiku_app_sg.security_group_id]
+#   aws_lb_target_group_arn = module.daiku_app_lb.target_group_arn
+#   alb_depends_on          = module.daiku_app_lb.alb_listener_depends_on
+# }
 
-module "ecr_daiku_app" {
-  source    = "./modules/ecr"
-  env       = var.ENV
-  ecs_tasks = local.variable.ecs_app_task
-}
+# module "ecr_daiku_app" {
+#   source    = "./modules/ecr"
+#   env       = var.ENV
+#   ecs_tasks = local.variable.ecs_app_task
+# }
 
 module "ecs_daiku_batch" {
   source          = "./modules/ecs-batch"
