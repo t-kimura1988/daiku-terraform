@@ -88,18 +88,18 @@ module "daiku_app_lb" {
 #   ecs_tasks = local.variable.ecs_app_task
 # }
 
-module "ecs_daiku_batch" {
-  source          = "./modules/ecs-batch"
-  env             = var.ENV
-  ecs_tasks       = local.variable.ecs_batch_task
-  ecs_cluster_arn = aws_ecs_cluster.main.arn
-}
+# module "ecs_daiku_batch" {
+#   source          = "./modules/ecs-batch"
+#   env             = var.ENV
+#   ecs_tasks       = local.variable.ecs_batch_task
+#   ecs_cluster_arn = aws_ecs_cluster.main.arn
+# }
 
-module "ecr_daiku_batch" {
-  source    = "./modules/ecr"
-  env       = var.ENV
-  ecs_tasks = local.variable.ecs_batch_task
-}
+# module "ecr_daiku_batch" {
+#   source    = "./modules/ecr"
+#   env       = var.ENV
+#   ecs_tasks = local.variable.ecs_batch_task
+# }
 
 module "rds" {
   source              = "./modules/rds"
