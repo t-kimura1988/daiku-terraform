@@ -61,7 +61,7 @@ module "daiku_app_lb" {
     module.https_sg.security_group_id
   ]
   bucket_id                  = module.s3_log.bucket_id
-  enable_deletion_protection = local.dev.enable_deletion_protection
+  enable_deletion_protection = local.variable.enable_deletion_protection
   vpc_id                     = module.network.vpc_id
   app_lb                     = local.variable.ecs_app_task
   route53_zone_name          = local.variable.route53_zone_name
@@ -104,7 +104,7 @@ module "ecr_daiku_batch" {
 module "rds" {
   source              = "./modules/rds"
   private_subnets     = module.network.private_subnet_ids
-  deletion_protection = false
+  deletion_protection = local.variable.enable_deletion_protection
   security_group_id   = module.postgres_sg.security_group_id
   env                 = var.ENV
 
