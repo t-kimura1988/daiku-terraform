@@ -1,6 +1,7 @@
 variable "ssm_private_subnet_id" {}
 variable "vpc_id" {}
 variable "aws_nat_gateway" {}
+variable "env" {}
 
 data "aws_iam_policy_document" "ec2_for_ssm" {
   source_json = data.aws_iam_policy.ec2_for_ssm.policy
@@ -63,7 +64,7 @@ resource "aws_instance" "main_for_operation" {
 
 //ログ
 resource "aws_s3_bucket" "operation" {
-  bucket = "operation-daiku-terraform-87682613271263810"
+  bucket = "operation-daiku-${var.env}-terraform-87682613271263810"
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "operation" {

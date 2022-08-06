@@ -123,6 +123,7 @@ module "ssm_manager" {
   ssm_private_subnet_id = module.network.private_subnet_ssm_id
   vpc_id                = module.network.vpc_id
   aws_nat_gateway       = module.network.aws_nat_gateway
+  env                   = var.ENV
 }
 
 module "vpc_endpoint" {
