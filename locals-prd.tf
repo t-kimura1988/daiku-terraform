@@ -61,6 +61,16 @@ locals {
       },
     }
 
+    ecs_batch_task = {
+      daiku-batch = {
+        family   = "daiku-batch",
+        cpu      = "256",
+        memory   = "512",
+        ecr_name = "daiku-batch"
+
+      },
+    }
+
     ssm_string_parameter = {
       FIRESTORE_URL       = "https://goen-daiku.firebaseio.com",
       FIREBASE_TYPE       = "service_account",
