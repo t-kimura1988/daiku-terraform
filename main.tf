@@ -1,6 +1,6 @@
 module "s3_log" {
   source      = "./modules/s3"
-  bucket_name = local.dev.s3_alb_bucket_name
+  bucket_name = "${var.ENV}-${local.dev.s3_alb_bucket_name}"
 }
 
 module "network" {
