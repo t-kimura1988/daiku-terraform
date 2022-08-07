@@ -88,7 +88,7 @@ locals {
       DB_PASSWORD                  = "dummy"
     }
 
-    route53_zone_name = "goenway.com"
+    route53_zone_name = "prd.goenway.com"
 
     rds_setting = {
       instance_class = "db.t3.small"
