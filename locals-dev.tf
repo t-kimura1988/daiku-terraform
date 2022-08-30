@@ -68,7 +68,7 @@ locals {
         cpu               = "256",
         memory            = "512",
         ecr_name          = "daiku-batch",
-        ecs_service_name  = "daiku-app",
+        ecs_service_name  = "daiku-batch",
         retention_in_days = 14
 
       },
