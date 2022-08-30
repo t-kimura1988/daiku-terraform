@@ -11,7 +11,7 @@ data "aws_caller_identity" "current" {}
 
 data "template_file" "task" {
   for_each = var.ecs_tasks
-  template = file("./modules/ecs-app/container-definitions-daiku-batch-${var.env}.json")
+  template = file("./modules/ecs-batch/container-definitions-daiku-batch-${var.env}.json")
   vars = {
     image       = "${data.aws_caller_identity.current.account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/${var.env}/daiku-batch:latest"
     awslogGroup = "${var.env}/ecs/daiku/${each.value.family}"
