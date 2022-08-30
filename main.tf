@@ -71,6 +71,30 @@ resource "aws_ecs_cluster" "main" {
   name = "${var.ENV}-daiku"
 }
 
+
+
+data "aws_iam_policy" "ecs_task_execution_role_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+data "aws_iam_policy_document" "ecs_task_execution" {
+
+  source_json = data.aws_iam_policy.ecs_task_execution_role_policy.policy
+
+  statement {
+    effect    = "Allow"
+    actions   = ["ssm:GetParameters", "kms:Decrypt"]
+    resources = ["*"]
+  }
+}
+
+module "ecs_task_execution_role" {
+  source     = "../role"
+  name       = "ecs-task-execution"
+  identifier = "ecs-tasks.amazonaws.com"
+  policy     = data.aws_iam_policy_document.ecs_task_execution.json
+}
+
 module "ecs_daiku_app" {
   source                  = "./modules/ecs-app"
   env                     = var.ENV
@@ -80,6 +104,7 @@ module "ecs_daiku_app" {
   security_group_ids      = [module.daiku_app_sg.security_group_id]
   aws_lb_target_group_arn = module.daiku_app_lb.target_group_arn
   alb_depends_on          = module.daiku_app_lb.alb_listener_depends_on
+  iam_role_arn            = module.ecs_task_execution_role.iam_role_arn
 }
 
 module "ecr_daiku_app" {
@@ -95,6 +120,7 @@ module "ecs_daiku_batch" {
   ecs_cluster_arn    = aws_ecs_cluster.main.arn
   protected_subnets  = module.network.protected_subnet_ids
   security_group_ids = [module.daiku_app_sg.security_group_id]
+  iam_role_arn       = module.ecs_task_execution_role.iam_role_arn
 }
 
 module "ecr_daiku_batch" {
