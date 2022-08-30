@@ -93,6 +93,8 @@ module "ecs_daiku_batch" {
   env             = var.ENV
   ecs_tasks       = local.variable.ecs_batch_task
   ecs_cluster_arn = aws_ecs_cluster.main.arn
+  protected_subnets       = module.network.protected_subnet_ids
+  security_group_ids      = [module.daiku_app_sg.security_group_id]
 }
 
 module "ecr_daiku_batch" {

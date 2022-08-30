@@ -78,7 +78,7 @@ resource "aws_ecs_service" "main" {
     ignore_changes = [task_definition]
   }
 
-  depends_on = [var.alb_depends_on]
+  depends_on = [var.alb_depends_on, var.security_group_ids, aws_ecs_task_definition.app_task]
 }
 
 resource "aws_cloudwatch_log_group" "for_ecs" {

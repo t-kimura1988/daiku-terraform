@@ -1,9 +1,13 @@
 variable "env" {}
 variable "ecs_cluster_arn" {}
+variable "security_group_ids" {}
+variable "protected_subnets" {}
 
 variable "ecs_tasks" {
 
 }
+
+data "aws_caller_identity" "current" {}
 
 data "template_file" "task" {
   for_each = var.ecs_tasks
@@ -66,7 +70,7 @@ resource "aws_ecs_service" "main" {
     ignore_changes = [task_definition]
   }
 
-  depends_on = [var.alb_depends_on]
+  depends_on = [var.security_group_ids, aws_ecs_task_definition.app_task]
 }
 
 resource "aws_cloudwatch_log_group" "for_ecs" {
