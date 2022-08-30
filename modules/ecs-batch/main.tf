@@ -60,7 +60,6 @@ resource "aws_ecs_service" "main" {
   desired_count                     = 1
   launch_type                       = "FARGATE"
   platform_version                  = "1.4.0"
-  health_check_grace_period_seconds = 3600
   network_configuration {
     security_groups  = var.security_group_ids
     assign_public_ip = false
