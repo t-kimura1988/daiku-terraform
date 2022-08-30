@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "ecs_task_batch_execution" {
 
 module "ecs_task_batch_execution_role" {
   source     = "../role"
-  name       = "ecs-task-execution"
+  name       = "ecs-task-batch-execution"
   identifier = "ecs-tasks.amazonaws.com"
   policy     = data.aws_iam_policy_document.ecs_task_batch_execution.json
 }
