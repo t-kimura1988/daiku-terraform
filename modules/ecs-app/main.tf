@@ -9,6 +9,7 @@ variable "ecs_tasks" {
 }
 
 variable "alb_depends_on" {}
+variable "iam_role_arn" {}
 
 data "aws_caller_identity" "current" {}
 
@@ -22,28 +23,6 @@ data "template_file" "task" {
   }
 }
 
-data "aws_iam_policy" "ecs_task_execution_role_policy" {
-  arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-
-data "aws_iam_policy_document" "ecs_task_execution" {
-
-  source_json = data.aws_iam_policy.ecs_task_execution_role_policy.policy
-
-  statement {
-    effect    = "Allow"
-    actions   = ["ssm:GetParameters", "kms:Decrypt"]
-    resources = ["*"]
-  }
-}
-
-module "ecs_task_execution_role" {
-  source     = "../role"
-  name       = "ecs-task-execution"
-  identifier = "ecs-tasks.amazonaws.com"
-  policy     = data.aws_iam_policy_document.ecs_task_execution.json
-}
-
 resource "aws_ecs_task_definition" "app_task" {
   for_each                 = var.ecs_tasks
   family                   = "${var.env}-${each.value.family}"
@@ -52,7 +31,7 @@ resource "aws_ecs_task_definition" "app_task" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   container_definitions    = data.template_file.task[each.key].rendered
-  execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
+  execution_role_arn       = var.iam_role_arn
 }
 
 resource "aws_ecs_service" "main" {
@@ -78,7 +57,7 @@ resource "aws_ecs_service" "main" {
     ignore_changes = [task_definition]
   }
 
-  depends_on = [var.alb_depends_on]
+  depends_on = [var.alb_depends_on, var.security_group_ids, aws_ecs_task_definition.app_task]
 }
 
 resource "aws_cloudwatch_log_group" "for_ecs" {

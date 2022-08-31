@@ -3,11 +3,59 @@
         "name": "main",
         "image": "${image}",
         "essential": true,
-        "portMappings": [
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-region": "ap-northeast-1",
+                "awslogs-stream-prefix": "ecs",
+                "awslogs-group": "${awslogGroup}"
+            }
+        },
+        "network_mode": "awsvpc",
+        "secrets": [
             {
-                "protocol": "tcp",
-                "containerPort": 8080,
-                "hostPort": 8080
+                "valueFrom": "/ENV/${env}/FIRESTORE_URL",
+                "name": "FIRESTORE_URL"
+            },
+            {
+                "valueFrom": "/ENV/${env}/FIREBASE_TYPE",
+                "name": "FIREBASE_TYPE"
+            },
+            {
+                "valueFrom": "/ENV/${env}/FIREBASE_PROJECT_ID",
+                "name": "FIREBASE_PROJECT_ID"
+            },
+            {
+                "valueFrom": "/ENV/${env}/FIREBASE_PRIVATE_KEY_ID",
+                "name": "FIREBASE_PRIVATE_KEY_ID"
+            },
+            {
+                "valueFrom": "/ENV/${env}/FIREBASE_PRIVATE_KEY",
+                "name": "FIREBASE_PRIVATE_KEY"
+            },
+            {
+                "valueFrom": "/ENV/${env}/FIREBASE_CLIENT_EMAIL",
+                "name": "FIREBASE_CLIENT_EMAIL"
+            },
+            {
+                "valueFrom": "/ENV/${env}/FIREBASE_CLIENT_ID",
+                "name": "FIREBASE_CLIENT_ID"
+            },
+            {
+                "valueFrom": "/ENV/${env}/FIREBASE_CLIENT_X509_CER_URL",
+                "name": "FIREBASE_CLIENT_X509_CER_URL"
+            },
+            {
+                "valueFrom": "/ENV/${env}/DB_URL",
+                "name": "DB_URL"
+            },
+            {
+                "valueFrom": "/ENV/${env}/DB_USERNAME",
+                "name": "DB_USERNAME"
+            },
+            {
+                "valueFrom": "/ENV/${env}/DB_PASSWORD",
+                "name": "DB_PASSWORD"
             }
         ]
     }
