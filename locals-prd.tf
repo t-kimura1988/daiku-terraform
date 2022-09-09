@@ -77,7 +77,7 @@ locals {
       FIRESTORE_URL       = "https://goen-daiku.firebaseio.com",
       FIREBASE_TYPE       = "service_account",
       FIREBASE_PROJECT_ID = "daiku-app-c5b17",
-      DB_URL              = "jdbc:postgresql://prd-daiku-db.cpnb4tsojwsk.ap-northeast-1.rds.amazonaws.com:5432/daikudb?stringtype=unspecified&loginTimeout=2&connectTimeout=2&cancelSignalTimeout=2&socketTimeout=60&tcpKeepAlive=true&targetServerType=primary&loadBalanceHosts=true",
+      DB_URL              = "jdbc:postgresql://prd-daiku-db.cpnb4tsojwsk.ap-northeast-1.rds.amazonaws.com:5432/daikudb?stringtype=unspecified&loginTimeout=10&connectTimeout=2&cancelSignalTimeout=2&socketTimeout=60&tcpKeepAlive=true&targetServerType=primary&loadBalanceHosts=true",
       DB_USERNAME         = "prddaikuuser1"
     }
 
@@ -87,7 +87,8 @@ locals {
       FIREBASE_CLIENT_EMAIL        = "dummy",
       FIREBASE_CLIENT_ID           = "dummy",
       FIREBASE_CLIENT_X509_CER_URL = "dummy",
-      DB_PASSWORD                  = "dummy"
+      DB_PASSWORD                  = "dummy",
+      API_KEY_VALUE_IOS            = "dummy"
     }
 
     route53_zone_name = "prd.goenway.com"

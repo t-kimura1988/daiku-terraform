@@ -88,7 +88,8 @@ locals {
       FIREBASE_CLIENT_EMAIL        = "dummy",
       FIREBASE_CLIENT_ID           = "dummy",
       FIREBASE_CLIENT_X509_CER_URL = "dummy",
-      DB_PASSWORD                  = "dummy"
+      DB_PASSWORD                  = "dummy",
+      API_KEY_VALUE_IOS            = "dummy"
     }
 
     route53_zone_name = "dev.goenway.com"
