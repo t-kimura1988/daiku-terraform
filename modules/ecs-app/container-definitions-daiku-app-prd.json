@@ -62,6 +62,10 @@
             {
                 "valueFrom": "/ENV/${env}/DB_PASSWORD",
                 "name": "DB_PASSWORD"
+            },
+            {
+                "valueFrom": "/ENV/${env}/API_KEY_VALUE_IOS",
+                "name": "API_KEY_VALUE_IOS"
             }
         ]
     }
