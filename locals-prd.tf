@@ -50,8 +50,8 @@ locals {
     ecs_app_task = {
       daiku-app = {
         family                = "daiku-app",
-        cpu                   = "256",
-        memory                = "512",
+        cpu                   = "1024",
+        memory                = "2048",
         ecs_service_name      = "daiku-app",
         retention_in_days     = 14,
         app_lb_name           = "daiku-app-lb",
